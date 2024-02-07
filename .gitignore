@@ -25,3 +25,4 @@ dist-ssr
 
 #recursos que se generan con npm run build
 src/main/resources/static/
+target/

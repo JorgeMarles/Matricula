@@ -1,0 +1,58 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.marlise.matriculas;
+
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
+import static java.util.Objects.nonNull;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
+import org.springframework.web.servlet.resource.ResourceResolverChain;
+
+/**
+ *
+ * @author Jorge Marles
+ */
+@Configuration
+public class SpringConfiguration implements WebMvcConfigurer {
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        this.serveDirectory(registry, "/", "classpath:/static/");
+    }
+    
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")
+                .allowedOriginPatterns("*");
+    }
+
+    private void serveDirectory(ResourceHandlerRegistry registry, String endpoint, String location) {
+        // 1
+        String[] endpointPatterns = endpoint.endsWith("/")
+                ? new String[]{endpoint.substring(0, endpoint.length() - 1), endpoint, endpoint + "**"}
+                : new String[]{endpoint, endpoint + "/", endpoint + "/**"};
+        registry
+                // 2
+                .addResourceHandler(endpointPatterns)
+                .addResourceLocations(location.endsWith("/") ? location : location + "/")
+                .resourceChain(false)
+                // 3
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    public Resource resolveResource(HttpServletRequest request, String requestPath, List<? extends Resource> locations, ResourceResolverChain chain) {
+                        Resource resource = super.resolveResource(request, requestPath, locations, chain);
+                        if (nonNull(resource)) {
+                            return resource;
+                        }
+                        return super.resolveResource(request, "/index.html", locations, chain);
+                    }
+                });
+    }
+
+}
