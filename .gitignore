@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#recursos que se generan con npm run build
+src/main/resources/static/
