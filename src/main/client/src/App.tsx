@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { Link } from 'react-router-dom';
- 
+import {Env} from './Env'
 
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
-      <h1>Vite + React</h1>
+      <h1>{Env.API_BASE_URL}</h1>
  
 <Link to='/cake'>Visit /cake</Link>
       <div className="card">
