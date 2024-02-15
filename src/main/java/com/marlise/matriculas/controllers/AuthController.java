@@ -4,7 +4,7 @@
  */
 package com.marlise.matriculas.controllers;
 
-import com.marlise.matriculas.MatriculasApplication;
+import com.marlise.matriculas.LangManager;
 import com.marlise.matriculas.models.ERole;
 import com.marlise.matriculas.models.Role;
 import com.marlise.matriculas.models.User;
@@ -85,7 +85,7 @@ public class AuthController {
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByDoc(signUpRequest.getDoc())) {
-      return ResponseEntity.badRequest().body(new MessageResponse(MatriculasApplication.resourceBundle.getString("error_username_taken")));
+      return ResponseEntity.badRequest().body(new MessageResponse(LangManager.getString("error_username_taken")));
     }
 
 
@@ -99,26 +99,26 @@ public class AuthController {
 
     if (strRoles == null) {
       Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-          .orElseThrow(() -> new RuntimeException(MatriculasApplication.resourceBundle.getString("error_role_not_found")));
+          .orElseThrow(() -> new RuntimeException(LangManager.getString("error_role_not_found")));
       roles.add(userRole);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
         case "admin":
           Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException(MatriculasApplication.resourceBundle.getString("error_role_not_found")));
+              .orElseThrow(() -> new RuntimeException(LangManager.getString("error_role_not_found")));
           roles.add(adminRole);
 
           break;
         case "mod":
           Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException(MatriculasApplication.resourceBundle.getString("error_role_not_found")));
+              .orElseThrow(() -> new RuntimeException(LangManager.getString("error_role_not_found")));
           roles.add(modRole);
 
           break;
         default:
           Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-              .orElseThrow(() -> new RuntimeException(MatriculasApplication.resourceBundle.getString("error_role_not_found")));
+              .orElseThrow(() -> new RuntimeException(LangManager.getString("error_role_not_found")));
           roles.add(userRole);
         }
       });
@@ -127,13 +127,13 @@ public class AuthController {
     user.setRoles(roles);
     userRepository.save(user);
     
-    return ResponseEntity.ok(new MessageResponse(MatriculasApplication.resourceBundle.getString("info_signed_up")));
+    return ResponseEntity.ok(new MessageResponse(LangManager.getString("info_signed_up")));
   }
 
   @PostMapping("/signout")
   public ResponseEntity<?> logoutUser() {
     ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(new MessageResponse(MatriculasApplication.resourceBundle.getString("info_signed_out")));
+        .body(new MessageResponse(LangManager.getString("info_signed_out")));
   }
 }

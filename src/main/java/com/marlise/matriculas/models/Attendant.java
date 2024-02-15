@@ -4,9 +4,12 @@
  */
 package com.marlise.matriculas.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +29,7 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 /**
  *
@@ -33,6 +37,7 @@ import lombok.NoArgsConstructor;
  */
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Data
 @Entity
 @Table(name = "attendant",
@@ -43,6 +48,10 @@ public class Attendant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private EDocType docType;
     
     @NotBlank
     @Column(unique = true)
@@ -76,12 +85,9 @@ public class Attendant {
     @NotBlank
     private String relationship;
     
+    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "doctype_id", nullable = false)
-    private DocType docType;
     
     @OneToMany(mappedBy = "attendant", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)

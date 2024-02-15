@@ -8,7 +8,7 @@ package com.marlise.matriculas.controllers;
  *
  * @author Jorge Marles
  */
-import com.marlise.matriculas.MatriculasApplication;
+import com.marlise.matriculas.LangManager;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,18 +27,18 @@ public class TestController {
   @GetMapping("/user")
   @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
   public String userAccess() {
-    return MatriculasApplication.resourceBundle.getString("message_user_test");
+    return LangManager.getString("message_user_test");
   }
 
   @GetMapping("/mod")
   @PreAuthorize("hasRole('MODERATOR')")
   public String moderatorAccess() {
-    return MatriculasApplication.resourceBundle.getString("message_mod_test");
+    return LangManager.getString("message_mod_test");
   }
 
   @GetMapping("/admin")
   @PreAuthorize("hasRole('ADMIN')")
   public String adminAccess() {
-    return MatriculasApplication.resourceBundle.getString("message_admin_test");
+    return LangManager.getString("message_admin_test");
   }
 }

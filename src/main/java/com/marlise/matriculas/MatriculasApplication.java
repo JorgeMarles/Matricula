@@ -8,11 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MatriculasApplication {
 
-    public static final Locale locale = Locale.forLanguageTag("es");
-    public static ResourceBundle resourceBundle;
+    
 
     public static void main(String[] args) {
-        resourceBundle = ResourceBundle.getBundle("application_messages", locale);
+        LangManager.setLang("es");
         SpringApplication.run(MatriculasApplication.class, args);
     }
 
