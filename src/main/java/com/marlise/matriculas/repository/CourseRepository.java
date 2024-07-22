@@ -4,7 +4,8 @@
  */
 package com.marlise.matriculas.repository;
 
-import com.marlise.matriculas.models.Attendant;
+import com.marlise.matriculas.models.Course;
+import com.marlise.matriculas.models.Grade;
 import com.marlise.matriculas.models.Student;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +19,11 @@ import org.springframework.stereotype.Repository;
  * @author Jorge Marles
  */
 @Repository
-public interface AttendantRepository extends JpaRepository<Attendant, Long>{
-    Optional<Attendant> findByDoc(String doc);
+public interface CourseRepository extends JpaRepository<Course, Long>{
+    @Query("SELECT c FROM Course c WHERE c.name LIKE :name")
+    Optional<Course> findByName(@Param("name") String name);
     
-    @Query("SELECT a FROM Attendant a WHERE a.firstName LIKE CONCAT('%',:name,'%')  OR a.lastName LIKE CONCAT('%',:name,'%')")
-    List<Attendant> findByName(@Param("name") String name);
+    List<Course> findByGrade(Grade grade);
+    
+    List<Student> findByGrade_Number(int number);
 }

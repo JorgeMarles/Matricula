@@ -36,6 +36,9 @@ public class Grade {
     @NotBlank
     private String name;
     
+    @NotBlank
+    private int number;
+    
     @OneToMany(mappedBy = "grade", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<Course> courses;

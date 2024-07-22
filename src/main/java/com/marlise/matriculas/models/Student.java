@@ -83,5 +83,4 @@ public class Student {
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
-    
 }
